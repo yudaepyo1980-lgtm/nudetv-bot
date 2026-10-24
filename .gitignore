@@ -1,0 +1,24 @@
+# 비밀 값 · 실행 중 생기는 파일은 기록하지 않음
+.env
+.venv/
+__pycache__/
+*.pyc
+bot.log
+chat.db
+notice.json
+picks.json
+emoji_work/tiles/
+emoji_work/char_*.png
+emoji_work/preview.png
+emoji_work/sheet.jpg
+.bot.lock
+userdata.db
+today_picks.json
+*.tar.gz
+emoji_work/sets.json
+site_seo/
+.DS_Store
+emoji_work/
+assets/
+banner.jpg
+picks_banner.jpg

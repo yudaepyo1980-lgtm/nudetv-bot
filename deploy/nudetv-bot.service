@@ -1,0 +1,15 @@
+[Unit]
+Description=누드TV 텔레그램 안내봇
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+User=nudetv
+WorkingDirectory=/opt/nudetv-bot
+Environment=TZ=Asia/Seoul
+ExecStart=/opt/nudetv-bot/.venv/bin/python -u bot.py
+Restart=always
+RestartSec=10
+
+[Install]
+WantedBy=multi-user.target
