@@ -1,0 +1,25 @@
+name: bot
+on:
+  schedule:
+    - cron: "*/5 * * * *"   # 5분마다 대기열에 한 개를 넣어 둠(앞 작업이 끝나면 바로 이어서 시작)
+  workflow_dispatch:
+concurrency:
+  group: bot
+  cancel-in-progress: false  # 한 번에 하나만: 앞 작업이 끝나야 다음이 시작
+jobs:
+  run:
+    runs-on: ubuntu-latest
+    timeout-minutes: 358
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+          cache: pip
+      - run: pip install -r requirements.txt
+      - name: 봇 실행
+        env:
+          DOTENV: ${{ secrets.DOTENV }}
+          DATA_REPO: ${{ secrets.DATA_REPO }}
+          DATA_DEPLOY_KEY: ${{ secrets.DATA_DEPLOY_KEY }}
+        run: sh deploy/gh_run.sh
