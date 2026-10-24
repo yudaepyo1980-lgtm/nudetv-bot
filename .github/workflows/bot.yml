@@ -1,7 +1,7 @@
 name: bot
 on:
-  schedule:
-    - cron: "*/5 * * * *"   # 5분마다 대기열에 한 개를 넣어 둠(앞 작업이 끝나면 바로 이어서 시작)
+  # schedule:   # 전환할 때 아래 두 줄의 주석(#)을 풀면 5분마다 이어서 실행됩니다
+  #   - cron: "*/5 * * * *"
   workflow_dispatch:
 concurrency:
   group: bot

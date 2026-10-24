@@ -4,7 +4,13 @@
 set -e
 export TZ=Asia/Seoul
 mkdir -p ~/.ssh
-printf '%s\n' "$DATA_DEPLOY_KEY" > ~/.ssh/data_key && chmod 600 ~/.ssh/data_key
+# 열쇠는 줄바꿈이 깨지기 쉬워서 한 줄짜리 base64 로 넣어 두었다가 여기서 풀어 씀 (원래 형태의 열쇠도 허용)
+case "$DATA_DEPLOY_KEY" in
+  *"BEGIN OPENSSH"*) printf '%s\n' "$DATA_DEPLOY_KEY" > ~/.ssh/data_key ;;
+  *) printf '%s' "$DATA_DEPLOY_KEY" | tr -d ' \n\r' | base64 -d > ~/.ssh/data_key ;;
+esac
+chmod 600 ~/.ssh/data_key
+ssh-keygen -y -f ~/.ssh/data_key >/dev/null || { echo "열쇠 형식이 올바르지 않아요 (DATA_DEPLOY_KEY 를 다시 만들어 주세요)"; exit 1; }
 export GIT_SSH_COMMAND="ssh -i $HOME/.ssh/data_key -o IdentitiesOnly=yes -o StrictHostKeyChecking=accept-new"
 git clone --depth 1 "git@github.com:${DATA_REPO}.git" /tmp/data
 printf '%s\n' "$DOTENV" > .env
