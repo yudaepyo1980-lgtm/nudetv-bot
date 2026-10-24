@@ -22,4 +22,7 @@ save() {
 trap save EXIT
 ( while true; do sleep 600; save; done ) &   # 10분마다 중간 저장 (갑자기 끊겨도 최대 10분 치만 잃음)
 # 봇 출력은 공개되는 실행 기록에 남지 않게 파일로만 보냄
-timeout 21300 python -u bot.py > /tmp/bot.log 2>&1; echo "봇 종료 코드: $?"
+rc=0
+timeout 21300 python -u bot.py > /tmp/bot.log 2>&1 || rc=$?
+echo "봇 종료 코드: $rc (124 = 정해진 시간이 다 되어 정상 종료)"
+exit 0
